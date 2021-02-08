@@ -52,7 +52,7 @@ class Settings {
 		this.heightApp = window.innerHeight;
 		this.selectedColor = null;
 
-		console.log( this );
+		//console.log( this );
 	}
 }
 let settings = new Settings();
@@ -65,7 +65,7 @@ class Camera {
 	}
 
 	scroll (a) {
-		console.log(`this.nowZoom(${this.nowZoom}) + a(${a}) = `, this.nowZoom + a);
+		//console.log(`this.nowZoom(${this.nowZoom}) + a(${a}) = `, this.nowZoom + a);
 		if ( this.nowZoom + a <= 1 ) {
 			this.nowZoom = this.defaultZoom;
 		} else {
@@ -255,7 +255,6 @@ let cells = [];
 // let graphicsElementCollection = [];
 
 let containerGraphics = new Container();//.setName('containerGame');
-let containerGraphicsArr = [];
 drawGrid( settings.widthGrid, settings.heightGrid );
 function drawGrid(widthPicture, heightPicture) {
 	// создает сетку из графических примитивов
@@ -279,8 +278,9 @@ function drawGrid(widthPicture, heightPicture) {
 			let graphics = new PIXI.Graphics();
 
 			graphics.beginFill(0xDE3249);
-			graphics.drawRect( (i * 32) + (1 * i), (j * 32) + (1 * j), 32, 32);
+			graphics.drawRect( 0, 0, 32, 32);
 			graphics.endFill();
+			graphics.position.set( (i * 32) + (1 * i), (j * 32) + (1 * j) );
 			
 			graphics.interactive = true;
 			graphics.buttonMode = true;
@@ -296,7 +296,6 @@ function drawGrid(widthPicture, heightPicture) {
 				obj: graphics
 			});
 
-			containerGraphicsArr.push( graphics );
 			containerGraphics.addChild( graphics );
 
 		}
@@ -312,18 +311,31 @@ function drawGrid(widthPicture, heightPicture) {
 }
 
 function handlerClick (e, pointx, pointy) {
-	if ( settings.selectedColor === null )
+	if ( settings.selectedColor === null ) {
+		console.log("клика не будет!");
 		return false;
+	}
 
-	cells.forEach((item) => {
+	cells.forEach((item, index) => {
 		if( item.id == `${pointx.toString()}x${pointy.toString()}` ) {
-			item.fill = true;
-			item.fillColor = settings.selectedColor;
+
+			let graphics = new PIXI.Graphics();
+			graphics.beginFill( `0x${settings.selectedColor}` );
+			graphics.drawRect( 0, 0, 32, 32);
+			graphics.endFill();
+			graphics.position.set( e.target.x, e.target.y );
+			
+			graphics.interactive = true;
+			graphics.buttonMode = true;
+			graphics.on("pointerdown", function (e) {
+				handlerClick(e, pointx, pointy);
+			});
+
+			containerGraphics.addChild( graphics );
+			containerGraphics.swapChildren( graphics, containerGraphics.children[ index ] );
+			containerGraphics.removeChildAt( containerGraphics.children.length - 1 );
 		}
 	});
-
-	e.target.tint = `0x${settings.selectedColor}`;
-	console.log( cells, settings.selectedColor );
 }
 
 function randomInteger(min, max) {
@@ -347,7 +359,7 @@ function resize() {
 
 function containerGraphicsCentered() {
 
-	console.log("containerGraphicsCentered");
+	//console.log("containerGraphicsCentered");
 	containerGraphics.x =  (app.screen.width / 2) - (containerGraphics.width / 2);
 	containerGraphics.y =  (app.screen.height / 2) - (containerGraphics.height / 2);
 }
@@ -410,7 +422,7 @@ function loadProgress() {
 			fillCorrectly = loadData[indexData].fillCorrectly;
 			fillColor = loadData[indexData].fillColor;
 
-			console.log(1, fillColor);
+			//console.log(1, fillColor);
 
 			let graphics = new PIXI.Graphics();
 
@@ -449,83 +461,3 @@ function loadProgress() {
 	app.stage.addChild( containerGraphics );
 
 }
-
-
-// let state, scoreBar, value = 0, score, target, gameScene,
-// 	id, bg, timer = 10, targetClick = true;
-
-// loader
-// 	.add("images/atlas.json")
-// 	.load( setup );
-
-// function setup() {
-// 	id = resources["images/atlas.json"].textures;
-
-// 	gameScene = new Container();
-// 	app.stage.addChild( gameScene );
-
-// 	bg = new Sprite( id["background.png"] );
-// 	bg.anchor.set(0, 0);
-// 	gameScene.addChild( bg );
-
-// 	let scoreBar = new Container();
-// 	scoreBar.position.set( app.stage.width / 2 - scoreBar.width / 2, 22 );
-// 	gameScene.addChild( scoreBar );
-
-// 	let bgScoreBar = new Sprite( id["score.png"] );
-// 	scoreBar.addChild( bgScoreBar );
-
-// 	let style = new TextStyle({
-// 		fontFamily: "Arial",
-// 		fontSize: 28,
-// 		fill: "white",
-// 	});
-
-// 	score = new Text( "0", style );
-// 	score.x = -score.width / 2;
-// 	score.y = -score.height / 2 - 1;
-// 	scoreBar.addChild( score );
-
-// 	target = new Sprite( id["cookie.png"] );
-// 	target.x = gameScene.width / 2;
-// 	target.y = gameScene.height / 2;
-// 	target.interactive = true;
-// 	target.buttonMode = true;
-// 	target.on("pointerdown", handlerClick);
-// 	gameScene.addChild( target );
-
-// 	state = play;
-// 	app.ticker.add( delta => gameLoop( delta ) );
-// }
-
-// function gameLoop(delta) {
-// 	state( delta );
-// }
-
-// function play() {
-// 	if ( timer == 0 ) {
-// 		targetClick = true;
-
-// 		target.scale.x = 1;
-// 		target.scale.y = 1;
-// 	} else if ( timer > 0 ) {
-// 		timer--;
-// 	}
-// }
-
-// function handlerClick () {
-// 	if ( targetClick ) {
-// 		value++;
-// 		score.text = value;
-
-// 		score.x = -score.width / 2;
-// 		score.y = -score.height / 2;
-
-// 		target.scale.x = 0.95;
-// 		target.scale.y = 0.95;
-
-// 		targetClick = false;
-
-// 		timer = 10;
-// 	}
-// }
