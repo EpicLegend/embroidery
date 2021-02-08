@@ -361,29 +361,25 @@ function saveProgress() {
 			fill: true/false закрасили ячейку или нет
 			fillCorrectly: true/false закрасили ячейку верно или нет
 			fillColor: цвет ячейки в шестнадцатеричном формате(без начальных символов| #123ABC = 123ABC)
+			obj: ячейка/объект от pixi.js
 		}
 	*/
+	let saveData = [];
+	cells.forEach((item)=> {
+		
+		// копировать переменные 
+		// чтобы не повредить данные в текущей сессии
+		// * todo можно оптимизировать копирование, но сейчас и так сойдет
+		var tmpCell = Object.assign({}, item);
+		tmpCell.obj = null;
+		saveData.push( tmpCell );
 
-
+	});
 
 	/*
 		куда выгружать сохранение
 	*/
-	const saveData = [];
-	cells.forEach((item)=> {
-		// item.obj = null;
-		var obj = item;
-		var copy = Object.assign({}, obj);
-		console.log(copy);
-		// копировать переменные 
-		// чтобы не повредить данные в текущей сессии
-		saveData.push( item );
-	});
-	console.log( "cells[0]", cells[0] );
-
-	
-	// localStorage.setItem( '', JSON.stringify(saveData) );
-	// console.log( JSON.parse( localStorage.getItem('') ) ); 
+	localStorage.setItem( 'saveData', JSON.stringify(saveData) );
 }
 
 function loadProgress() {
