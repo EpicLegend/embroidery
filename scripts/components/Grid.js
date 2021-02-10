@@ -1,8 +1,9 @@
 export default class Grid {
-	constructor(widthGrid, heightGrid, sizeBlock, widthApp, heightApp, app, gameData, marginBlock = 1) {
-		
+	constructor(settings, app, gameData, marginBlock = 1) {
+
 		this.app = app;
 		this.gameData = gameData;
+		this.settings = settings;
 
 		// создает сетку из графических примитивов
 		// на основе widthGrid и heiight плоскости
@@ -10,14 +11,14 @@ export default class Grid {
 		// то округляем к ближайшему числу 321/32 = 10
 
 		// кол-во ячеек по горизонтали в изображение
-		this.n = Math.round( widthGrid / sizeBlock );
+		this.n = Math.round( this.settings.widthGrid / this.settings.sizeBlock );
 		// кол-во ячеек по вертикали в изображение
-		this.k = Math.round( heightGrid / sizeBlock );
+		this.k = Math.round( this.settings.heightGrid / this.settings.sizeBlock );
 
 		// ширина приложения(канвас)
-		this.widthApp = widthApp;
+		this.widthApp = app.screen.width;
 		// высота приложения(канвас)
-		this.heightApp = heightApp;
+		this.heightApp = app.screen.height;
 		
 		this.gameData.containerGraphics = new PIXI.Container();
 		
@@ -35,9 +36,7 @@ export default class Grid {
 				
 				graphics.interactive = true;
 				graphics.buttonMode = true;
-				graphics.on("pointerdown", function (e) {
-					handlerClick(e, i, j);
-				});
+				graphics.on("pointerdown", (e) => { this.handlerCellClick(e, i, j); });
 				
 				this.gameData.cells.push({
 					id: `${i.toString()}x${j.toString()}`,
@@ -62,5 +61,36 @@ export default class Grid {
 	containerGraphicsCentered() {
 		this.gameData.containerGraphics.x =  ( this.widthApp / 2) - ( this.gameData.containerGraphics.width / 2 );
 		this.gameData.containerGraphics.y =  ( this.heightApp / 2) - ( this.gameData.containerGraphics.height / 2 );
+	}
+
+	handlerCellClick (e, pointx, pointy) {
+		console.log("CLICK!!!");
+		if ( this.settings.selectedColor === null ) {
+			console.log("клика не будет!");
+			return false;
+		}
+
+		this.gameData.cells.forEach((item, index) => {
+			if( item.id == `${pointx.toString()}x${pointy.toString()}` ) {
+
+				let graphics = new PIXI.Graphics();
+				graphics.beginFill( `0x${this.settings.selectedColor}` );
+				graphics.drawRect( 0, 0, 32, 32);
+				graphics.endFill();
+				graphics.position.set( e.target.x, e.target.y );
+				
+				graphics.interactive = true;
+				graphics.buttonMode = true;
+				graphics.on("pointerdown", function (e) {
+					this.handlerCellClick(e, pointx, pointy);
+				});
+
+				this.gameData.containerGraphics.addChild( graphics );
+				//this.gameData.containerGraphics.swapChildren( graphics, this.gameData.containerGraphics.children[ index ] );
+				//this.gameData.containerGraphics.removeChildAt( this.gameData.containerGraphics.children.length - 1 );
+			}
+		});
+		this.gameData.containerGraphics.children[1].position.set(-50, -50);
+		console.log(this.gameData.containerGraphics.children[1]);
 	}
 }
