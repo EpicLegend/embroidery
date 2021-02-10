@@ -1,9 +1,10 @@
 export default class Grid {
-	constructor(settings, app, gameData, marginBlock = 1) {
+	constructor(settings, app, gameData, palette, marginBlock = 1) {
 
 		this.app = app;
 		this.gameData = gameData;
 		this.settings = settings;
+		this.palette = palette;
 
 		// создает сетку из графических примитивов
 		// на основе widthGrid и heiight плоскости
@@ -65,7 +66,7 @@ export default class Grid {
 
 	handlerCellClick (e, pointx, pointy) {
 		console.log("CLICK!!!");
-		if ( this.settings.selectedColor === null ) {
+		if ( this.palette.selectedColor === null ) {
 			console.log("клика не будет!");
 			return false;
 		}
@@ -74,23 +75,21 @@ export default class Grid {
 			if( item.id == `${pointx.toString()}x${pointy.toString()}` ) {
 
 				let graphics = new PIXI.Graphics();
-				graphics.beginFill( `0x${this.settings.selectedColor}` );
+				graphics.beginFill( `0x${this.palette.selectedColor}` );
 				graphics.drawRect( 0, 0, 32, 32);
 				graphics.endFill();
 				graphics.position.set( e.target.x, e.target.y );
 				
 				graphics.interactive = true;
 				graphics.buttonMode = true;
-				graphics.on("pointerdown", function (e) {
+				graphics.on("pointerdown", (e) => {
 					this.handlerCellClick(e, pointx, pointy);
 				});
 
 				this.gameData.containerGraphics.addChild( graphics );
-				//this.gameData.containerGraphics.swapChildren( graphics, this.gameData.containerGraphics.children[ index ] );
-				//this.gameData.containerGraphics.removeChildAt( this.gameData.containerGraphics.children.length - 1 );
+				this.gameData.containerGraphics.swapChildren( graphics, this.gameData.containerGraphics.children[ index ] );
+				this.gameData.containerGraphics.removeChildAt( this.gameData.containerGraphics.children.length - 1 );
 			}
 		});
-		this.gameData.containerGraphics.children[1].position.set(-50, -50);
-		console.log(this.gameData.containerGraphics.children[1]);
 	}
 }

@@ -1,7 +1,7 @@
 export default class SaveGame {
-	constructor(dataGame) {
+	constructor(gameData) {
 
-		this.dataGame = dataGame;
+		this.gameData = gameData;
 
 	}
 
@@ -10,7 +10,7 @@ export default class SaveGame {
 			let loadData = JSON.parse( localStorage.getItem('saveData') );
 		}
 		
-
+		console.log(this.gameData);
 		// очистить канвас и контейнер с данными
 		containerGraphics.destroy( {children:true, texture:true, baseTexture:true} );
 		// containerGraphics = new Container();

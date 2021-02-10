@@ -1,7 +1,8 @@
 export default class SaveGame {
-	constructor(dataGame) {
+	constructor(gameData) {
 
-		this.dataGame = dataGame;
+		this.gameData = gameData;
+		this.saveData = [];
 
 		// можно удалить, но сейчас пусть будет здесь
 		this.typeSave = ["local", "server"];
@@ -10,7 +11,7 @@ export default class SaveGame {
 
 	save(typeSave) {		
 		
-		this.dataGame.forEach((item)=> {
+		this.gameData.cells.forEach((item)=> {
 			
 			// копировать переменные 
 			// чтобы не повредить данные в текущей сессии
@@ -37,7 +38,7 @@ export default class SaveGame {
 
 	inLocalStorageSave() {
 		console.log("сохраняем локально");
-		localStorage.setItem( 'saveData', JSON.stringify(this.saveData) );
+		localStorage.setItem( 'saveData', JSON.stringify( this.saveData ) );
 	}
 
 	inServerSave() {

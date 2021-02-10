@@ -2,11 +2,11 @@ import SaveGame from "./SaveGame.js";
 import LoadGame from "./LoadGame.js";
 
 export default class SaveLoadGame {
-    constructor(dataGame) {
+	constructor(gameData) {
 
-        /*
-            Работает только с сохранением массива объектов
-            
+		/*
+			Работает только с сохранением массива объектов
+			
 			сохранение и загрузка прогресса игры
 			с помощью JSON
 			{
@@ -18,21 +18,18 @@ export default class SaveLoadGame {
 			}
 		*/
 
-        this.dataGame = dataGame;
-
-
-        // load/save game
+		// load/save game
 			let wrapperSD = document.createElement("div");
 			wrapperSD.id = "wrapper-save-load";
 
-            this.saveGame = new SaveGame(this.dataGame);
+			this.saveGame = new SaveGame(gameData);
 			let btnSave = document.createElement("button");
 			btnSave.innerHTML = "Сохранить";
 			btnSave.classList.add("btn-save");
 			btnSave.addEventListener( "click", ()=>{ this.saveGame.save('local') } );
 			wrapperSD.appendChild( btnSave );
 
-            this.loadGame = new LoadGame(this.dataGame);
+			this.loadGame = new LoadGame(gameData);
 			let btnLoad = document.createElement("button");
 			btnLoad.innerHTML = "Загрузить";
 			btnLoad.classList.add("btn-load");
@@ -40,5 +37,5 @@ export default class SaveLoadGame {
 			wrapperSD.appendChild( btnLoad );
 
 			document.body.appendChild( wrapperSD );
-    }
+	}
 }
