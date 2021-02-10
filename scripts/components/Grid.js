@@ -1,7 +1,8 @@
 export default class Grid {
-	constructor(widthGrid, heightGrid, sizeBlock, widthApp, heightApp, app, marginBlock = 1) {
+	constructor(widthGrid, heightGrid, sizeBlock, widthApp, heightApp, app, gameData, marginBlock = 1) {
 		
 		this.app = app;
+		this.gameData = gameData;
 
 		// создает сетку из графических примитивов
 		// на основе widthGrid и heiight плоскости
@@ -18,9 +19,8 @@ export default class Grid {
 		// высота приложения(канвас)
 		this.heightApp = heightApp;
 		
-		this.cells = [];
-		this.containerGraphics = new PIXI.Container();
-
+		this.gameData.containerGraphics = new PIXI.Container();
+		
 		// создаем сетку 
 		for(let i = 0; i < this.n; i++) {
 
@@ -39,7 +39,7 @@ export default class Grid {
 					handlerClick(e, i, j);
 				});
 				
-				this.cells.push({
+				this.gameData.cells.push({
 					id: `${i.toString()}x${j.toString()}`,
 					fill: false,
 					fillCorrectly: null,
@@ -47,7 +47,7 @@ export default class Grid {
 					obj: graphics
 				});
 
-				this.containerGraphics.addChild( graphics );
+				this.gameData.containerGraphics.addChild( graphics );
 
 			}
 
@@ -55,12 +55,12 @@ export default class Grid {
 
 		this.containerGraphicsCentered();
 
-		this.app.stage.addChild( this.containerGraphics );
+		this.app.stage.addChild( this.gameData.containerGraphics );
 	   
 	}
 	
 	containerGraphicsCentered() {
-		this.containerGraphics.x =  ( this.widthApp / 2) - ( this.containerGraphics.width / 2 );
-		this.containerGraphics.y =  ( this.heightApp / 2) - ( this.containerGraphics.height / 2 );
+		this.gameData.containerGraphics.x =  ( this.widthApp / 2) - ( this.gameData.containerGraphics.width / 2 );
+		this.gameData.containerGraphics.y =  ( this.heightApp / 2) - ( this.gameData.containerGraphics.height / 2 );
 	}
 }
