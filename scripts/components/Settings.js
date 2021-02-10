@@ -5,5 +5,6 @@ export default class Settings {
 		this.sizeBlock = k;
 		this.widthApp = widthWindow;
 		this.heightApp = heightWindow;
+		this.selectedColor = null;
 	}
 }
