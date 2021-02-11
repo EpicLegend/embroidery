@@ -2,6 +2,7 @@ import Grid from "./Grid.js";
 import Palette from "./Palette.js";
 import Camera from "./Camera.js";
 import SaveLoadGame from "./SaveLoadGame.js";
+import Score from "./Score.js";
 
 export default class Game {
 
@@ -15,14 +16,17 @@ export default class Game {
 		this.app = app;
 		this.parent = parent;
 		this.settings = settings;
+
+		this.score = new Score("#game");
 		this.gameData = {
 			cells: [],
 			containerGraphics: null,
+			score: this.score
 		}
-		this.camera = new Camera();
+
+		this.camera = new Camera();		
 		// Palette(appendChild, colors[type array])
 		this.palette = new Palette("#game", ["8B0000", "C71585", "FF4500", "9400D3", "48D1CC"]);
-		this.palette.drawUI();
 		// Grid(ширина грида, высота грида, ширина приложения[канваса], высота приложения[канваса], канвас, размер одного блока)
 		this.grid = new Grid( this.settings, this.app, this.gameData, this.palette );
 		// SaveLoadGame(что сохраняем, куда(данные игры)  )

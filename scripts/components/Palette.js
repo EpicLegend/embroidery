@@ -22,6 +22,8 @@ export default class Palette {
 
 		this.selectedColor = selectedColor;
 
+		this.drawUI();
+
 	}
 
 	drawUI() {

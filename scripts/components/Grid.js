@@ -122,11 +122,8 @@ export default class Grid {
 				this.palette.colors.forEach((el) => {
 
 					if( el.title == this.palette.alphabet[item.type] ) {
-
-						
 						item.fillCorrectly = true;
-						console.log("верный цвет", el.title , this.palette.alphabet[item.type]);
-						console.log(item);
+						this.gameData.score.incScore();
 					}
 
 				});
@@ -160,7 +157,6 @@ export default class Grid {
 	downloadedGrid(loadData) {
 		
 		this.clearData();
-		console.log(loadData);
 		/*
 			разбор JSON и проецировать на canvas
 		*/
@@ -193,6 +189,7 @@ export default class Grid {
 
 		// центрируем сетку
 		this.containerGraphicsCentered();
+		this.gameData.score.loadScore();
 
 		this.app.stage.addChild( this.gameData.containerGraphics );
 	}
