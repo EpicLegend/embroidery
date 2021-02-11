@@ -34,8 +34,9 @@ export default class Grid {
 
 			for(let j = 0; j <  this.k; j++) {
 				
-				let graphics = this.drawGraphics( i, j );
-				this.addCells( i, j, graphics );
+				let type = this.randomInteger( 0, this.palette.colors.length - 1);
+				let graphics = this.drawGraphics( i, j, type );
+				this.addCells( i, j, type, graphics );
 				this.gameData.containerGraphics.addChild( graphics );
 
 			}
@@ -48,18 +49,37 @@ export default class Grid {
 
 	}	
 
-	drawGraphics( y, x, fillColor = null ) {
+	drawGraphics( y, x, type, fill = null, fillColor = null ) {
 
 		let graphics = new PIXI.Graphics();
 
 		if( fillColor === null ) {
+
 			graphics.beginFill( 0xDE3249 );
+
 		} else {
+
 			graphics.beginFill( `0x${fillColor}` );
+
 		}
+
 		graphics.drawRect( 0, 0, this.settings.sizeBlock, this.settings.sizeBlock);
 		graphics.position.set( (y * 32) + (1 * y), (x * 32) + (1 * x) );
 		graphics.endFill();
+
+
+		if ( !fill ) {
+			let style = new PIXI.TextStyle({
+				fontFamily: "Arial",
+				fontSize: 14,
+				fill: "white",
+			});
+		
+			let typeGraphics = new PIXI.Text( this.palette.alphabet[type], style );
+			typeGraphics.x = graphics.width / 2 - typeGraphics.width / 2;
+			typeGraphics.y = graphics.height / 2 - typeGraphics.height / 2;
+			graphics.addChild( typeGraphics );
+		}
 		
 		graphics.interactive = true;
 		graphics.buttonMode = true;
@@ -71,9 +91,10 @@ export default class Grid {
 
 	}
 
-	addCells(y, x, item, fill = false, fillCorrectly = null, fillColor = null) {
+	addCells(y, x, type, item, fill = false, fillCorrectly = null, fillColor = null) {
 		this.gameData.cells.push({
 			id: `${y.toString()}x${x.toString()}`,
+			type: type,
 			fill: fill,
 			fillCorrectly: fillCorrectly,
 			fillColor: fillColor,
@@ -97,6 +118,20 @@ export default class Grid {
 
 				item.fill = true;
 				item.fillColor = this.palette.selectedColor;
+				
+				this.palette.colors.forEach((el) => {
+
+					if( el.title == this.palette.alphabet[item.type] ) {
+
+						
+						item.fillCorrectly = true;
+						console.log("верный цвет", el.title , this.palette.alphabet[item.type]);
+						console.log(item);
+					}
+
+				});
+
+				
 
 				let graphics = new PIXI.Graphics();
 				graphics.beginFill( `0x${this.palette.selectedColor}` );
@@ -125,6 +160,7 @@ export default class Grid {
 	downloadedGrid(loadData) {
 		
 		this.clearData();
+		console.log(loadData);
 		/*
 			разбор JSON и проецировать на canvas
 		*/
@@ -132,7 +168,7 @@ export default class Grid {
 		const n = Math.round( this.settings.widthGrid / this.settings.sizeBlock );
 		const k = Math.round( this.settings.heightGrid / this.settings.sizeBlock );
 
-		let fill, fillCorrectly, fillColor;
+		let fill, type, fillCorrectly, fillColor;
 
 		let indexData = 0;
 		for(let i = 0; i < n; i++) {
@@ -142,9 +178,10 @@ export default class Grid {
 				fill = loadData[indexData].fill;
 				fillCorrectly = loadData[indexData].fillCorrectly;
 				fillColor = loadData[indexData].fillColor;
+				type = loadData[indexData].type;
 				
-				let graphics = this.drawGraphics( i, j, fillColor );
-				this.addCells( i, j, graphics, fill, fillCorrectly, fillColor );
+				let graphics = this.drawGraphics( i, j, type, fill, fillColor );
+				this.addCells( i, j, type, graphics, fill, fillCorrectly, fillColor );
 				
 				this.gameData.containerGraphics.addChild( graphics );
 
@@ -176,6 +213,13 @@ export default class Grid {
 
 	}
 
-	
+	/* supports func */
+	randomInteger(min, max) {
+
+		// случайное число от min до (max+1)
+		let rand = min + Math.random() * (max + 1 - min);
+		return Math.floor(rand);
+		
+	}
 
 }

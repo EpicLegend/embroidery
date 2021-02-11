@@ -37,7 +37,7 @@ import Settings from "./components/Settings.js";
 import Game from "./components/Game.js";
 
 //Settings(width, height, sizeBlock, selectedColor = null)
-let settings = new Settings( 321, 329, 32, window.innerWidth, window.innerHeight );
+let settings = new Settings( 100, 100, 32, window.innerWidth, window.innerHeight );
 
 let app = new PIXI.Application({
 	width: settings.widthApp,
@@ -54,18 +54,3 @@ window.addEventListener("resize", () => {
 	game.resize();
 
 });
-
-
-
-
-
-
-
-/* supports func */
-function randomInteger(min, max) {
-
-	// случайное число от min до (max+1)
-	let rand = min + Math.random() * (max + 1 - min);
-	return Math.floor(rand);
-	
-}

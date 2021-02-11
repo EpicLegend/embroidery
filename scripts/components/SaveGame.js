@@ -11,6 +11,11 @@ export default class SaveGame {
 
 	save(typeSave) {
 
+		/*
+			- Сейчас хранится весь массив данных(без pixi элементов)
+			- Можно еще оптимизировать и хранить только заполненные ячейки(времени мало, оставил как есть)
+		*/
+
 		this.saveData = [];
 		
 		this.gameData.cells.forEach((item)=> {
@@ -40,7 +45,7 @@ export default class SaveGame {
 
 	inLocalStorageSave() {
 
-		console.log("сохраняем локально");
+		console.log("сохраняем локально", this.saveData);
 		localStorage.setItem( 'saveData', JSON.stringify( this.saveData ) );
 
 	}

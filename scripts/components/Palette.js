@@ -48,6 +48,7 @@ export default class Palette {
 			btn.addEventListener("click", () => {
 
 				this.selectedColor = item.color;
+				console.log(item.title);
 
 			});
 
