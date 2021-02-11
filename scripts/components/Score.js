@@ -20,7 +20,6 @@ export default class Score {
 		this.blockScore = document.createElement("div");
 		this.blockScore.id = "score";
 		this.blockScore.innerHTML = this.score;
-		console.log(this.parent);
 		document.querySelector(this.parent).appendChild( this.blockScore );
 	}
 

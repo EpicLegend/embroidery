@@ -21,6 +21,7 @@ export default class Palette {
 		});
 
 		this.selectedColor = selectedColor;
+		this.selectedColorTitle;
 
 		this.drawUI();
 
@@ -50,7 +51,7 @@ export default class Palette {
 			btn.addEventListener("click", () => {
 
 				this.selectedColor = item.color;
-				console.log(item.title);
+				this.selectedColorTitle = item.title;
 
 			});
 

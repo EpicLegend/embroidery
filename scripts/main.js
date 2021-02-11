@@ -36,7 +36,7 @@
 import Settings from "./components/Settings.js";
 import Game from "./components/Game.js";
 
-//Settings(width, height, sizeBlock, selectedColor = null)
+//Settings(width[ширина 'картинки'], height[высота 'картинки'], sizeBlock, selectedColor = null)
 let settings = new Settings( 100, 100, 32, window.innerWidth, window.innerHeight );
 
 let app = new PIXI.Application({

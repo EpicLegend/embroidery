@@ -1,30 +1,27 @@
 export default class Camera {
 
-	constructor(zoom = 1, defaultZoom = 1) {
+	constructor(zoom = 1, stepZoom = 1, defaultZoom = 1) {
 
 		this.nowZoom = zoom;
 		this.oldZoom = this.nowZoom;
 		this.defaultZoom = defaultZoom;
+		this.stepZoom = stepZoom;
 
 		this.drawUIControl();
 
 	}
 
 	zoom (a) {
-
-		if ( this.nowZoom + a <= 1 ) {
+		if ( this.nowZoom + a <= this.defaultZoom ) {
 			this.nowZoom = this.defaultZoom;
 		} else {
 			this.nowZoom = this.nowZoom + a;
 		}
-
 	}
 
 	scrollEvent() {
-
 		this.oldZoom = this.nowZoom;		
-		return this.nowZoom;
-		
+		return this.nowZoom;		
 	}
 
 	drawUIControl() {
@@ -55,13 +52,13 @@ export default class Camera {
 
 	incZoom() {
 
-		this.zoom(2);
+		this.zoom( this.stepZoom );
 
 	}
 
 	decZoom() {
 
-		this.zoom(-2);
+		this.zoom( -this.stepZoom );
 
 	}
 

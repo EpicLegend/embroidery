@@ -110,7 +110,6 @@ export default class Grid {
 			console.log("клика не будет!");
 			return false;
 		}
-	
 
 		this.gameData.cells.forEach((item, index) => {
 
@@ -118,31 +117,19 @@ export default class Grid {
 
 				item.fill = true;
 				item.fillColor = this.palette.selectedColor;
-				
-				this.palette.colors.forEach((el) => {
 
-					if( el.title == this.palette.alphabet[item.type] ) {
-						item.fillCorrectly = true;
-						this.gameData.score.incScore();
-					}
-
-				});
-
-				
+				if (this.palette.selectedColorTitle == this.palette.alphabet[item.type]) {
+					item.fillCorrectly = true;
+					this.gameData.score.incScore();
+				} else {
+					item.fillCorrectly = false;
+				}
 
 				let graphics = new PIXI.Graphics();
 				graphics.beginFill( `0x${this.palette.selectedColor}` );
 				graphics.drawRect( 0, 0, 32, 32);
 				graphics.endFill();
 				graphics.position.set( e.target.x, e.target.y );
-				
-				graphics.interactive = true;
-				graphics.buttonMode = true;
-				graphics.on("pointerdown", (e) => {
-
-					this.handlerCellClick(e, pointx, pointy);
-					
-				});
 
 				this.gameData.containerGraphics.addChild( graphics );
 				this.gameData.containerGraphics.swapChildren( graphics, this.gameData.containerGraphics.children[ index ] );
