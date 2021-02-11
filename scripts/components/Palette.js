@@ -1,5 +1,7 @@
 export default class Palette {
+
 	constructor(appentParent, colors, selectedColor = null) {
+
 		this.alphabet = [ "а", "б", "в", "г", "д", "е", "ё",
 						  "ж", "з", "и", "й", "к", "л", "м",
 						  "н", "о", "п", "р", "с", "т", "у",
@@ -8,14 +10,22 @@ export default class Palette {
 		this.parent = appentParent;
 		this.colors = [];
 		colors.forEach((item, index)=> {
+
 			this.colors.push( {
+
 				title: this.alphabet[index],
 				color: item
+
 			});
+
 		});
+
 		this.selectedColor = selectedColor;
+
 	}
+
 	drawUI() {
+
 		// создание ui палитры и вставка в this.parent
 		let blockPalette = document.createElement("div");
 		blockPalette.id = "palette";
@@ -36,7 +46,9 @@ export default class Palette {
 
 			// определить выбранный цвет
 			btn.addEventListener("click", () => {
+
 				this.selectedColor = item.color;
+
 			});
 
 			wrapper.appendChild( btn );
@@ -44,5 +56,7 @@ export default class Palette {
 
 		blockPalette.appendChild( wrapper );
 		document.querySelector(this.parent).appendChild( blockPalette );
+
 	}
+	
 }

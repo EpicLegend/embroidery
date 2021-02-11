@@ -26,7 +26,7 @@ export default class Game {
 		// Grid(ширина грида, высота грида, ширина приложения[канваса], высота приложения[канваса], канвас, размер одного блока)
 		this.grid = new Grid( this.settings, this.app, this.gameData, this.palette );
 		// SaveLoadGame(что сохраняем, куда(данные игры)  )
-		new SaveLoadGame( this.gameData );
+		new SaveLoadGame( this.gameData, this.settings, this.grid );
 
 		//запуск игры
 		this.start();
@@ -35,42 +35,26 @@ export default class Game {
 
 	start() {
 		
-		let state = play;
-
-		this.app.ticker.add( delta => gameLoop( delta ) );
-		function gameLoop(delta) {
-			state( delta );
-		}
-
-		function play(delta) {
-		}
-
+		this.app.ticker.add( delta => this.gameLoop( delta ) );
 		
+	}
 
-		
+	gameLoop( delta ) {
 
-		function randomInteger(min, max) {
-			// случайное число от min до (max+1)
-			let rand = min + Math.random() * (max + 1 - min);
-			return Math.floor(rand);
+		if ( this.camera.nowZoom != this.camera.oldZoom  ) {
+			this.gameData.containerGraphics.scale.set( this.camera.scrollEvent() );
+			this.grid.containerGraphicsCentered();
 		}
 
-		window.addEventListener("resize", () => {
-			resize();
-		});
+	}
 
-		function resize() {
-			// центрируем сетку
-			containerGraphicsCentered();
+	resize() {
 
-			settings.widthApp = window.innerWidth;
-			settings.heightApp = window.innerHeight;
-			app.renderer.resize(settings.widthApp, settings.heightApp);
-		}
+		this.grid.containerGraphicsCentered();
 
-
-		
-
+		this.settings.widthApp = window.innerWidth;
+		this.settings.heightApp = window.innerHeight;
+		this.app.renderer.resize( this.settings.widthApp, this.settings.heightApp );
 		
 	}
 }

@@ -1,33 +1,34 @@
 export default class Camera {
-	constructor(zoom = 1) {
+
+	constructor(zoom = 1, defaultZoom = 1) {
+
 		this.nowZoom = zoom;
 		this.oldZoom = this.nowZoom;
-		this.defaultZoom = 1;
+		this.defaultZoom = defaultZoom;
 
 		this.drawUIControl();
+
 	}
 
-	scroll (a) {
+	zoom (a) {
+
 		if ( this.nowZoom + a <= 1 ) {
 			this.nowZoom = this.defaultZoom;
 		} else {
 			this.nowZoom = this.nowZoom + a;
 		}
+
 	}
 
 	scrollEvent() {
+
 		this.oldZoom = this.nowZoom;		
 		return this.nowZoom;
-	}
-
-	zoom() {
-		if ( this.nowZoom != this.oldZoom  ) {
-			containerGraphics.scale.set( this.scrollEvent() );
-			containerGraphicsCentered();
-		}
+		
 	}
 
 	drawUIControl() {
+		
 		// resize picture
 		const blocResize = document.createElement("div");
 		blocResize.id = "resize";
@@ -49,21 +50,27 @@ export default class Camera {
 		btnDec.addEventListener( "click", ()=> { this.decZoom(); } );
 
 		document.body.appendChild( blocResize );
+
 	}
 
 	incZoom() {
-		this.scroll(2);
-		this.log();
+
+		this.zoom(2);
+
 	}
 
 	decZoom() {
-		this.scroll(-2);
-		this.log();
+
+		this.zoom(-2);
+
 	}
 
 	log() {
+
 		console.log("nowZoom: ", this.nowZoom);
 		console.log("oldZoom: ", this.oldZoom);
 		console.log("defaultZoom: ", this.defaultZoom);
+
 	}
+	
 }

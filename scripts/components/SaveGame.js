@@ -9,7 +9,9 @@ export default class SaveGame {
 		
 	}
 
-	save(typeSave) {		
+	save(typeSave) {
+
+		this.saveData = [];
 		
 		this.gameData.cells.forEach((item)=> {
 			
@@ -37,11 +39,15 @@ export default class SaveGame {
 	}
 
 	inLocalStorageSave() {
+
 		console.log("сохраняем локально");
 		localStorage.setItem( 'saveData', JSON.stringify( this.saveData ) );
+
 	}
 
 	inServerSave() {
+
 		console.log("сохраняем на сервер");
+		
 	}
 }
