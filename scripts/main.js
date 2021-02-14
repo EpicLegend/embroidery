@@ -50,6 +50,9 @@
 пример 3 - https://www.youtube.com/watch?v=d-ah72hxgD8&ab_channel=MCCHEMODAN
 
 
+- % закраски
+- за каждые 10% даем бонус
+
 */
 
 import Settings from "./components/Settings.js";
