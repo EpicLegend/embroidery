@@ -30,19 +30,13 @@ export default class Camera {
 		const blocResize = document.createElement("div");
 		blocResize.id = "resize";
 
-		const titleResize = document.createElement("span");
-		titleResize.innerHTML = "Размер:";
-		blocResize.appendChild( titleResize );
-
 		const btnInc = document.createElement("button");
-		btnInc.classList.add( "resize-inc" );
-		btnInc.innerHTML = "+";
+		btnInc.classList.add( "btn", "inc" );
 		blocResize.appendChild( btnInc ); 
 		btnInc.addEventListener( "click", ()=> { this.incZoom(); } );
 
 		const btnDec = document.createElement("button");
-		btnDec.classList.add( "resize-dec" );
-		btnDec.innerHTML = "-";
+		btnDec.classList.add( "btn", "dec" );
 		blocResize.appendChild( btnDec );
 		btnDec.addEventListener( "click", ()=> { this.decZoom(); } );
 

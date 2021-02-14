@@ -33,10 +33,6 @@ export default class Palette {
 		let blockPalette = document.createElement("div");
 		blockPalette.id = "palette";
 
-		let titlePalette = document.createElement("span");
-		titlePalette.innerHTML = "Палитра:";
-		blockPalette.appendChild( titlePalette );
-
 		let wrapper = document.createElement("div");
 		wrapper.classList.add( "palette-wrapper" );
 

@@ -25,15 +25,13 @@ export default class SaveLoadGame {
 
 			this.saveGame = new SaveGame( gameData );
 			let btnSave = document.createElement("button");
-			btnSave.innerHTML = "Сохранить";
-			btnSave.classList.add("btn-save");
+			btnSave.classList.add("btn", "save");
 			btnSave.addEventListener( "click", ()=>{ this.saveGame.save('local') } );
 			wrapperSD.appendChild( btnSave );
 
 			this.loadGame = new LoadGame( gameData, settings, grid );
 			let btnLoad = document.createElement("button");
-			btnLoad.innerHTML = "Загрузить";
-			btnLoad.classList.add("btn-load");
+			btnLoad.classList.add("btn", "load");
 			btnLoad.addEventListener( "click", () => { this.loadGame.load() } );
 			wrapperSD.appendChild( btnLoad );
 
