@@ -1,4 +1,5 @@
 export default class Grid {
+	
 	constructor(settings, app, gameData, palette, marginBlock = 1) {
 
 		this.app = app;

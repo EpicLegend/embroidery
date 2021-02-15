@@ -32,7 +32,6 @@ export default class Game {
 		this.grid = new Grid( this.settings, this.app, this.gameData, this.palette );
 		// SaveLoadGame(что сохраняем, куда(данные игры)  )
 		new SaveLoadGame( this.gameData, this.settings, this.grid );
-		new LoadPicture();
 
 		//запуск игры
 		this.start();
