@@ -52,6 +52,9 @@ canvas {
 .btn.save {
 	background-image: url("../images/save.svg");
 }
+.btn.load-picture {
+	background-image: url("../images/btn-picture.svg");
+}
 
 
 /* btn zoom */
@@ -154,7 +157,12 @@ canvas {
 
 
 
-
+/* btn load picture */
+#wrapper-load-picture {
+	position: fixed;
+	top: 12vmin;
+	left: 1vmin;
+}
 
 
 

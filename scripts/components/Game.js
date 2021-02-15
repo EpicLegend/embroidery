@@ -3,6 +3,7 @@ import Palette from "./Palette.js";
 import Camera from "./Camera.js";
 import SaveLoadGame from "./SaveLoadGame.js";
 import Score from "./Score.js";
+import LoadPicture from "./LoadPicture.js";
 
 export default class Game {
 
@@ -31,6 +32,7 @@ export default class Game {
 		this.grid = new Grid( this.settings, this.app, this.gameData, this.palette );
 		// SaveLoadGame(что сохраняем, куда(данные игры)  )
 		new SaveLoadGame( this.gameData, this.settings, this.grid );
+		new LoadPicture();
 
 		//запуск игры
 		this.start();
