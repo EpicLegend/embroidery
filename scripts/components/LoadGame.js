@@ -1,3 +1,5 @@
+import Config from "./Config.js";
+
 export default class LoadGame {
 
 	constructor(gameData, settings, grid) {
@@ -10,8 +12,31 @@ export default class LoadGame {
 
 	load() {
 
+		const config = new Config();
+
+		// куда сохранять
+		switch(config.typeSaveGame) {
+			case "local": 
+				this.inLocalStorageLoad();
+				break;
+			case "server":
+				this.inServerLoad();
+				break;
+			default:
+				break;
+		}
+		
+	}
+
+	loadError() {
+		console.log( "Данных нет в localstorage!" );
+	}
+
+	inLocalStorageLoad() {
+
 		let loadData;
 
+		console.log("Загрузка локально", this.saveData);
 		if ( localStorage.hasOwnProperty('saveData') ) {
 
 			loadData = JSON.parse( localStorage.getItem('saveData') );
@@ -27,8 +52,10 @@ export default class LoadGame {
 
 	}
 
-	loadError() {
-		console.log( "Данных нет в localstorage!" );
+	inServerLoad() {
+
+		console.log("Загрузка с сервер");
+		
 	}
 
 }

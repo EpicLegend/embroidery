@@ -1,15 +1,14 @@
+import Config from "./Config.js";
+
 export default class SaveGame {
 	constructor(gameData) {
 
 		this.gameData = gameData;
 		this.saveData = [];
-
-		// можно удалить, но сейчас пусть будет здесь
-		this.typeSave = ["local", "server"];
 		
 	}
 
-	save(typeSave) {
+	save() {
 
 		/*
 			- Сейчас хранится весь массив данных(без pixi элементов)
@@ -29,8 +28,10 @@ export default class SaveGame {
 
 		});
 
+		const config = new Config();
+
 		// куда сохранять
-		switch(typeSave) {
+		switch(config.typeSaveGame) {
 			case "local": 
 				this.inLocalStorageSave();
 				break;
