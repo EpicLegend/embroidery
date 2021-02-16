@@ -10,6 +10,16 @@ export default class Config{
 		this.countColorPalette = 6;
 		// кол-во % до бонуса
 		this.precentBonus = 10;
+
+		// Это для будущего заготовка
+		// выделенная ячейка фон
+		this.selectedCellBG = "#CAC9CA";
+		// выделенная ячейка текст
+		this.selectedCellText = "#828484";
+		// дефолтная ячейка фон
+		this.defaultCellBG = "#B1B0B2";
+		// дефолтная ячейка фон
+		this.defaultCellText = "#040304";
 		
 	}
 

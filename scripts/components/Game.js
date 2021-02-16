@@ -3,6 +3,7 @@ import Palette from "./Palette.js";
 import Camera from "./Camera.js";
 import SaveLoadGame from "./SaveLoadGame.js";
 import Score from "./Score.js";
+import Config from "./Config.js";
 
 export default class Game {
 
@@ -20,7 +21,7 @@ export default class Game {
 
 		this.loader = new PIXI.Loader();
 		this.loader
-			.add( this.src )
+			.add( [this.src, "images/texture-block.jpeg"] )
 			.load( () => { this.start() } );
 
 		
@@ -39,29 +40,28 @@ export default class Game {
 		this.settings.heightPicture = picture.height;
 		
 		// очень много ресурсов требуется!
-		// let palette = [];
-		// for (var i = 0, n = rgba.length; i < n; i += 4) {			
+		this.palette = [];
+		for (var i = 0, n = rgba.length; i < n; i += 4) {			
 		
-		// 	// формирует все цвета из картинки
-		// 	palette.push(
-		// 		{
-		// 			r: rgba[i  ],
-		// 			g: rgba[i+1],
-		// 			b: rgba[i+2],
-		// 			a: 255
-		// 		}
-		// 	);
+			// формирует все цвета из картинки
+			this.palette.push(
+				{
+					r: rgba[i  ],
+					g: rgba[i+1],
+					b: rgba[i+2]
+				}
+			);
 	
-		// }
+		}
+		const corePalette = this.palette.filter( (item, index) => {
+			const _item = JSON.stringify(item);
+			return index ===  this.palette.findIndex( obj => {
+				return JSON.stringify(obj) === _item;
+			} );
+		} );
 
-		// let newArrayObject = palette.filter( (item, index) => {
-		// 	const _item = JSON.stringify(item);
-		// 	return index === palette.findIndex(obj => {
-		// 		return JSON.stringify(obj) === _item;
-		// 	});
-		// } );
+		console.log( "dfgdfgdfg: " )
 
-		this.palette = [1, 2, 3];
 
 		this.score = new Score("#game");
 		this.gameData = {
@@ -69,11 +69,14 @@ export default class Game {
 			containerGraphics: null,
 			score: this.score,
 			dataPalette: this.palette,
+			corePalette: corePalette,
+			pictureBGtexture: this.loader.resources[ "images/texture-block.jpeg" ].texture,
+			config: new Config()
 		}
 
 		
 		// Palette(appendChild, colors[type array])
-		this.palette = new Palette("#game", this.gameData.dataPalette);
+		this.palette = new Palette("#game", this.gameData);
 		// Grid(ширина грида, высота грида, ширина приложения[канваса], высота приложения[канваса], канвас, размер одного блока)
 		this.grid = new Grid( this.settings, this.app, this.gameData, this.palette );
 		this.camera = new Camera( this.grid );		

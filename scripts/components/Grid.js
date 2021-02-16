@@ -22,13 +22,9 @@ export default class Grid {
 		
 
 		// кол-во ячеек по горизонтали в изображение
-		// this.n = this.settings.widthPicture ;
+		this.n = this.settings.widthPicture ;
 		// // кол-во ячеек по вертикали в изображение
-		// this.k = this.settings.heightPicture;
-		// кол-во ячеек по горизонтали в изображение
-		this.n = 10 ;
-		// // кол-во ячеек по вертикали в изображение
-		this.k = 10;
+		this.k = this.settings.heightPicture;
 
 		// ширина приложения(канвас)
 		this.widthApp = this.app.screen.width;
@@ -36,21 +32,34 @@ export default class Grid {
 		this.heightApp = this.app.screen.height;
 		
 		this.gameData.containerGraphics = new PIXI.Container();
-		
 		// создаем сетку 
+		let indexPoint = 0;
+
 		for(let i = 0; i < this.n; i++) {
 
 			for(let j = 0; j <  this.k; j++) {
-				
-				let type = this.randomInteger( 0, this.palette.colors.length - 1);
-				let graphics = this.drawGraphics( i, j, type );
-				this.addCells( i, j, type, graphics );
-				this.gameData.containerGraphics.addChild( graphics );
 
+				// найти нужный цвет для блока
+				for(let a = 0; a < this.palette.colorAlphabet.length; a++) {
+					if ( JSON.stringify( this.gameData.dataPalette[ indexPoint ] ) === JSON.stringify( this.palette.colorAlphabet[a].color ) ) {
+
+						let type = this.palette.colorAlphabet[a]; //this.randomInteger( 0, this.palette.colors.length - 1);
+						let graphics = this.drawGraphics( i, j, type );
+						this.addCells( i, j, type, graphics );
+						this.gameData.containerGraphics.addChild( graphics );
+
+						break;
+
+					}
+				}
+				
+				indexPoint++;
+				
 			}
 
 		}
 
+		
 		this.containerGraphicsCentered();
 
 		this.app.stage.addChild( this.gameData.containerGraphics );
@@ -67,12 +76,11 @@ export default class Grid {
 		if (cameraMove != null) {
 			this.gameData.containerGraphics.position.set( cameraMove.x, cameraMove.y );
 		}
-
+		this.containerGraphicsCentered();
 		
 	}
 
 	drawGraphics( y, x, type, fill = null, fillColor = null ) {
-
 		/*
 			- рисует квадрат
 			- с width, height(из settings)
@@ -80,15 +88,15 @@ export default class Grid {
 			- корректно закрасили(fill)
 			- цвет квадрата(fillColor)
 		*/
-
+		
 		let graphics = new PIXI.Graphics();
 
 		if( fillColor === null ) {
-
-			graphics.beginFill( 0xDE3249 );
-
+			// {title: item.title, color: item.color}
+			//graphics.beginFill( `0x${ this.palette.convertRGBtoHEX( type.color.r, type.color.g, type.color.b ).slice(1) }` );
+			graphics.beginFill( `0x${ this.gameData.config.defaultCellBG.slice(1) }` );
 		} else {
-
+			
 			graphics.beginFill( `0x${fillColor}` );
 
 		}
@@ -102,10 +110,10 @@ export default class Grid {
 			let style = new PIXI.TextStyle({
 				fontFamily: "Arial",
 				fontSize: 14,
-				fill: "white",
+				fill: "#828484",
 			});
-		
-			let typeGraphics = new PIXI.Text( this.palette.alphabet[type], style );
+			
+			let typeGraphics = new PIXI.Text( type.title , style );
 			typeGraphics.x = graphics.width / 2 - typeGraphics.width / 2;
 			typeGraphics.y = graphics.height / 2 - typeGraphics.height / 2;
 			graphics.addChild( typeGraphics );
@@ -141,6 +149,8 @@ export default class Grid {
 			return false;
 		}
 
+		console.log( this.palette.selectedColor );
+
 		this.gameData.cells.forEach((item, index) => {
 
 			if( item.id == `${pointx.toString()}x${pointy.toString()}` ) {
@@ -156,7 +166,7 @@ export default class Grid {
 				}
 
 				let graphics = new PIXI.Graphics();
-				graphics.beginFill( `0x${this.palette.selectedColor}` );
+				graphics.beginFill( `0x${ this.palette.selectedColor.slice(1) }` );
 				graphics.drawRect( 0, 0, 32, 32);
 				graphics.endFill();
 				graphics.position.set( e.target.x, e.target.y );
