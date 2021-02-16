@@ -18,6 +18,7 @@ export default class Score {
 
 	drawUI() {
 		this.blockScore = document.createElement("div");
+		this.blockScore.classList.add("btn");
 		this.blockScore.id = "score";
 		this.blockScore.innerHTML = this.score;
 		document.querySelector(this.parent).appendChild( this.blockScore );

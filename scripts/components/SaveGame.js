@@ -1,5 +1,3 @@
-import Config from "./Config.js";
-
 export default class SaveGame {
 	constructor(gameData) {
 
@@ -8,7 +6,7 @@ export default class SaveGame {
 		
 	}
 
-	save() {
+	save(type) {
 
 		/*
 			- Сейчас хранится весь массив данных(без pixi элементов)
@@ -16,7 +14,6 @@ export default class SaveGame {
 		*/
 
 		this.saveData = [];
-		
 		this.gameData.cells.forEach((item)=> {
 			
 			// копировать переменные 
@@ -28,10 +25,9 @@ export default class SaveGame {
 
 		});
 
-		const config = new Config();
 
 		// куда сохранять
-		switch(config.typeSaveGame) {
+		switch(type) {
 			case "local": 
 				this.inLocalStorageSave();
 				break;
@@ -48,7 +44,7 @@ export default class SaveGame {
 
 		console.log("сохраняем локально", this.saveData);
 		localStorage.setItem( 'saveData', JSON.stringify( this.saveData ) );
-
+		
 	}
 
 	inServerSave() {

@@ -1,6 +1,6 @@
 export default class Settings {
 
-	constructor( w, h, k, widthWindow, heightWindow ) {
+	constructor( w, h, k, widthWindow, heightWindow, ) {
 
 		this.widthGrid = w;
 		this.heightGrid = h;		
@@ -10,7 +10,6 @@ export default class Settings {
 
 		this.widthPicture = 0;
 		this.heightPicture = 0;
-
 	}
 	
 }

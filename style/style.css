@@ -186,11 +186,14 @@ canvas {
 #score {
 	position: fixed;
 	top: 0px;
-	left: 50%;
-	transform: translateX(-50%);
+	right: 1vmin;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 	padding: 5px 10px;
 	background-color: #fff;
+
+	font-size: 22px;
+	color: #E96B85;
 }

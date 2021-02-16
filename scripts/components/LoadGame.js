@@ -1,5 +1,3 @@
-import Config from "./Config.js";
-
 export default class LoadGame {
 
 	constructor(gameData, settings, grid) {
@@ -10,12 +8,11 @@ export default class LoadGame {
 
 	}
 
-	load() {
+	load(type) {
 
-		const config = new Config();
 
 		// куда сохранять
-		switch(config.typeSaveGame) {
+		switch(type) {
 			case "local": 
 				this.inLocalStorageLoad();
 				break;
@@ -36,7 +33,7 @@ export default class LoadGame {
 
 		let loadData;
 
-		console.log("Загрузка локально", this.saveData);
+		
 		if ( localStorage.hasOwnProperty('saveData') ) {
 
 			loadData = JSON.parse( localStorage.getItem('saveData') );
@@ -46,7 +43,8 @@ export default class LoadGame {
 			this.loadError();
 			return false;
 
-		}		
+		}
+		console.log("Загрузка локально", loadData);
 		
 		this.grid.downloadedGrid(loadData);
 

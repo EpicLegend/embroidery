@@ -17,8 +17,6 @@ export default class Grid {
 
 		// создает сетку из графических примитивов
 		// на основе widthGrid и heiight плоскости
-		// если widthGrid || heightGrid не делится целиком на K
-		// то округляем к ближайшему числу 321/32 = 10
 		
 
 		// кол-во ячеек по горизонтали в изображение
@@ -76,7 +74,6 @@ export default class Grid {
 		if (cameraMove != null) {
 			this.gameData.containerGraphics.position.set( cameraMove.x, cameraMove.y );
 		}
-		this.containerGraphicsCentered();
 		
 	}
 
@@ -89,21 +86,27 @@ export default class Grid {
 			- цвет квадрата(fillColor)
 		*/
 		
-		let graphics = new PIXI.Graphics();
+		let graphics;
 
 		if( fillColor === null ) {
 			// {title: item.title, color: item.color}
 			//graphics.beginFill( `0x${ this.palette.convertRGBtoHEX( type.color.r, type.color.g, type.color.b ).slice(1) }` );
+			graphics = new PIXI.Graphics();
 			graphics.beginFill( `0x${ this.gameData.config.defaultCellBG.slice(1) }` );
+			graphics.drawRect( 0, 0, this.settings.sizeBlock, this.settings.sizeBlock);
+			graphics.position.set( (y * this.settings.sizeBlock) + (1 * y), (x * this.settings.sizeBlock) + (1 * x) );
+			graphics.endFill();
 		} else {
-			
-			graphics.beginFill( `0x${fillColor}` );
+			graphics = new PIXI.Sprite( this.gameData.pictureBGtexture.texture )
+			graphics.width = this.settings.sizeBlock;
+			graphics.height = this.settings.sizeBlock;
+			graphics.tint = `0x${ fillColor.slice(1) }`;
+			graphics.position.set( (y * this.settings.sizeBlock) + (1 * y), (x * this.settings.sizeBlock) + (1 * x) );
+			//graphics.beginFill( `0x${ fillColor.slice(1) }` );
 
 		}
 
-		graphics.drawRect( 0, 0, this.settings.sizeBlock, this.settings.sizeBlock);
-		graphics.position.set( (y * 32) + (1 * y), (x * 32) + (1 * x) );
-		graphics.endFill();
+		
 
 
 		if ( !fill ) {
@@ -121,13 +124,26 @@ export default class Grid {
 		
 		graphics.interactive = true;
 		graphics.buttonMode = true;
-		graphics.on("pointerdown", (e) => {
-			this.handlerCellClick(e, y, x);
-		} );
+		graphics
+			.on("pointerdown", (e) => { this.handlerCellClick(e, y, x); } );
+			// .on( 'pointerup', (e)=>{ this.onButtonUp(e) } )
+			// .on( 'pointerupoutside', (e)=>{ this.onButtonUp(e) } )
+			// .on( 'pointerover', (e)=>{ this.onButtonOver(e) } )
+			// .on( 'pointerout', (e)=>{ this.onButtonOut(e) } );
 		
 		return graphics;
 
 	}
+
+	// onButtonUp(e) {
+	// 	console.log( "onButtonUp", e );
+	// }
+	// onButtonOver(e) {
+	// 	console.log( "onButtonOver", e );
+	// }
+	// onButtonOut(e) {
+	// 	console.log( "onButtonOut", e );
+	// }
 
 	addCells(y, x, type, item, fill = false, fillCorrectly = null, fillColor = null) {
 		this.gameData.cells.push({
@@ -149,35 +165,42 @@ export default class Grid {
 			return false;
 		}
 
-		console.log( this.palette.selectedColor );
+		const arrLength = this.gameData.cells.length;
+		for(let i = 0; i < arrLength; i++) {
 
-		this.gameData.cells.forEach((item, index) => {
+			if( this.gameData.cells[i].id == `${pointx.toString()}x${pointy.toString()}` ) {
 
-			if( item.id == `${pointx.toString()}x${pointy.toString()}` ) {
+				this.gameData.cells[i].fill = true;
+				this.gameData.cells[i].fillColor = this.palette.selectedColor;
+				
 
-				item.fill = true;
-				item.fillColor = this.palette.selectedColor;
-
-				if (this.palette.selectedColorTitle == this.palette.alphabet[item.type]) {
-					item.fillCorrectly = true;
+				if ( this.palette.selectedColorTitle == this.gameData.cells[i].type.title ) {
+					this.gameData.cells[i].fillCorrectly = true;
 					this.gameData.score.incScore();
 				} else {
-					item.fillCorrectly = false;
+					this.gameData.cells[i].fillCorrectly = false;
 				}
 
-				let graphics = new PIXI.Graphics();
-				graphics.beginFill( `0x${ this.palette.selectedColor.slice(1) }` );
-				graphics.drawRect( 0, 0, 32, 32);
-				graphics.endFill();
+				let graphics = new PIXI.Sprite( this.gameData.pictureBGtexture.texture )
+				graphics.width = this.settings.sizeBlock;
+				graphics.height = this.settings.sizeBlock;
+				graphics.tint = `0x${ this.palette.selectedColor.slice(1) }`;
 				graphics.position.set( e.target.x, e.target.y );
 
+				graphics.interactive = true;
+				graphics.buttonMode = true;
+				graphics
+					.on("pointerdown", (e) => { this.handlerCellClick(e, pointx, pointy); } );
+
 				this.gameData.containerGraphics.addChild( graphics );
-				this.gameData.containerGraphics.swapChildren( graphics, this.gameData.containerGraphics.children[ index ] );
+				this.gameData.containerGraphics.swapChildren( graphics, this.gameData.containerGraphics.children[ i ] );
 				this.gameData.containerGraphics.removeChildAt( this.gameData.containerGraphics.children.length - 1 );
+
+				break;
 
 			}
 
-		});
+		}
 
 	}
 
@@ -188,11 +211,12 @@ export default class Grid {
 			разбор JSON и проецировать на canvas
 		*/
 
-		const n = Math.round( this.settings.widthGrid / this.settings.sizeBlock );
-		const k = Math.round( this.settings.heightGrid / this.settings.sizeBlock );
+		// кол-во ячеек по горизонтали в изображение
+		const n = this.settings.widthPicture ;
+		// // кол-во ячеек по вертикали в изображение
+		const k = this.settings.heightPicture;
 
 		let fill, type, fillCorrectly, fillColor;
-
 		let indexData = 0;
 		for(let i = 0; i < n; i++) {
 

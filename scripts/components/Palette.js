@@ -49,7 +49,6 @@ export default class Palette {
 
 				this.selectedColor = this.convertRGBtoHEX( item.color.r, item.color.g, item.color.b );
 				this.selectedColorTitle = item.title;
-				console.log(item);
 
 			});
 

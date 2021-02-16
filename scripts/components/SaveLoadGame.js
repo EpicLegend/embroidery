@@ -1,5 +1,6 @@
 import SaveGame from "./SaveGame.js";
 import LoadGame from "./LoadGame.js";
+import Config from "./Config.js";
 
 export default class SaveLoadGame {
 
@@ -18,24 +19,24 @@ export default class SaveLoadGame {
 				obj: ячейка/объект от pixi.js
 			}
 		*/
-
+		const config = new Config();
 		// load/save game
-			let wrapperSD = document.createElement("div");
-			wrapperSD.id = "wrapper-save-load";
+		let wrapperSD = document.createElement("div");
+		wrapperSD.id = "wrapper-save-load";
 
-			this.saveGame = new SaveGame( gameData );
-			let btnSave = document.createElement("button");
-			btnSave.classList.add("btn", "save");
-			btnSave.addEventListener( "click", ()=>{ this.saveGame.save('local') } );
-			wrapperSD.appendChild( btnSave );
+		this.saveGame = new SaveGame( gameData );
+		let btnSave = document.createElement("button");
+		btnSave.classList.add("btn", "save");
+		btnSave.addEventListener( "click", ()=>{ this.saveGame.save(config.typeSaveGame) } );
+		wrapperSD.appendChild( btnSave );
 
-			this.loadGame = new LoadGame( gameData, settings, grid );
-			let btnLoad = document.createElement("button");
-			btnLoad.classList.add("btn", "load");
-			btnLoad.addEventListener( "click", () => { this.loadGame.load() } );
-			wrapperSD.appendChild( btnLoad );
+		this.loadGame = new LoadGame( gameData, settings, grid );
+		let btnLoad = document.createElement("button");
+		btnLoad.classList.add("btn", "load");
+		btnLoad.addEventListener( "click", () => { this.loadGame.load(config.typeSaveGame) } );
+		wrapperSD.appendChild( btnLoad );
 
-			document.body.appendChild( wrapperSD );
+		document.body.appendChild( wrapperSD );
 	}
 	
 }

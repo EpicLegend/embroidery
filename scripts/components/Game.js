@@ -35,6 +35,13 @@ export default class Game {
 		const picture = new PIXI.Sprite( this.loader.resources[ this.src ].texture );
 		const rgba = this.app.renderer.plugins.extract.pixels( picture );
 
+		// Если изображение отличается по пропорциям, то  вписать по большей стороне
+		if( picture.width > picture.height ) {
+			picture.height = picture.width;
+		} else if (picture.height > picture.width) {
+			picture.width = picture.height;
+		}
+
 		// добавить в настройки размеры картинки
 		this.settings.widthPicture = picture.width;
 		this.settings.heightPicture = picture.height;
@@ -60,7 +67,6 @@ export default class Game {
 			} );
 		} );
 
-		console.log( "dfgdfgdfg: " )
 
 
 		this.score = new Score("#game");
@@ -70,7 +76,7 @@ export default class Game {
 			score: this.score,
 			dataPalette: this.palette,
 			corePalette: corePalette,
-			pictureBGtexture: this.loader.resources[ "images/texture-block.jpeg" ].texture,
+			pictureBGtexture: this.loader.resources[ "images/texture-block.jpeg" ],
 			config: new Config()
 		}
 

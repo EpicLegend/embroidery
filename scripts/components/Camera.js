@@ -83,12 +83,12 @@ export default class Camera {
 			this.nowZoom = this.nowZoom + a;
 		}
 
-		this.position = {
-			x: this.grid.gameData.containerGraphics.x,
-			y: this.grid.gameData.containerGraphics.y
-		};
+		// this.position = {
+		// 	x: this.grid.gameData.containerGraphics.x,
+		// 	y: this.grid.gameData.containerGraphics.y
+		// };
 
-		this.grid.redrawContainer( this.scrollEvent(), this.position );
+		this.grid.redrawContainer( this.scrollEvent() );
 	}
 
 	scrollEvent() {
