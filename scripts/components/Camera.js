@@ -39,8 +39,10 @@ export default class Camera {
 				a - влево
 				s - вниз
 				d - вправо
+				* передвижение только по осям.
+				* можно добавить горизонтальное передвижение, но потом
+				* главное, что сейчас работает как нужно.
 			*/
-			console.log(this.position.y)
 			switch ( e.key.toLowerCase() ) {
 				case "w":
 					this.direction = "up";
@@ -76,10 +78,8 @@ export default class Camera {
 	zoom (a) {
 		if ( this.nowZoom + a <= this.minZoom ) {
 			this.nowZoom = this.minZoom;
-			console.log("minZoom ");
 		} else {
 			this.nowZoom = this.nowZoom + a;
-			console.log("nowZoom + a ");
 		}
 
 		this.position = {
@@ -116,13 +116,11 @@ export default class Camera {
 	}
 
 	incZoom() {
-		console.log("incZoom");
 		this.zoom( this.stepZoom );
 
 	}
 
 	decZoom() {
-		console.log("decZoom");
 		this.zoom( -this.stepZoom );
 
 	}
