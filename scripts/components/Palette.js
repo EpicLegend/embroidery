@@ -10,13 +10,14 @@ export default class Palette {
 		this.parent = appentParent;
 		this.colors = [];
 		colors.forEach((item, index)=> {
+			console.log(item);
 
-			this.colors.push( {
+			// this.colors.push( {
 
-				title: this.alphabet[index],
-				color: item
+			// 	title: this.alphabet[index],
+			// 	color: item
 
-			});
+			// });
 
 		});
 

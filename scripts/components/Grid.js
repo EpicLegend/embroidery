@@ -1,3 +1,5 @@
+
+
 export default class Grid {
 	
 	constructor(settings, app, gameData, palette, marginBlock = 1) {
@@ -17,11 +19,16 @@ export default class Grid {
 		// на основе widthGrid и heiight плоскости
 		// если widthGrid || heightGrid не делится целиком на K
 		// то округляем к ближайшему числу 321/32 = 10
+		
 
 		// кол-во ячеек по горизонтали в изображение
-		this.n = Math.round( this.settings.widthGrid / this.settings.sizeBlock );
-		// кол-во ячеек по вертикали в изображение
-		this.k = Math.round( this.settings.heightGrid / this.settings.sizeBlock );
+		// this.n = this.settings.widthPicture ;
+		// // кол-во ячеек по вертикали в изображение
+		// this.k = this.settings.heightPicture;
+		// кол-во ячеек по горизонтали в изображение
+		this.n = 10 ;
+		// // кол-во ячеек по вертикали в изображение
+		this.k = 10;
 
 		// ширина приложения(канвас)
 		this.widthApp = this.app.screen.width;
@@ -48,9 +55,31 @@ export default class Grid {
 
 		this.app.stage.addChild( this.gameData.containerGraphics );
 
-	}	
+	}
+
+	redrawContainer(cameraZoom = null, cameraMove = null) {
+
+		if (cameraZoom != null) {
+			this.gameData.containerGraphics.scale.set( cameraZoom );
+			this.containerGraphicsCentered();
+		}
+
+		if (cameraMove != null) {
+			this.gameData.containerGraphics.position.set( cameraMove.x, cameraMove.y );
+		}
+
+		
+	}
 
 	drawGraphics( y, x, type, fill = null, fillColor = null ) {
+
+		/*
+			- рисует квадрат
+			- с width, height(из settings)
+			- в позицию x, y(передаем)
+			- корректно закрасили(fill)
+			- цвет квадрата(fillColor)
+		*/
 
 		let graphics = new PIXI.Graphics();
 
